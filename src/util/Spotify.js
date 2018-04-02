@@ -23,7 +23,6 @@ let Spotify = {
 	        let accessToken = window.location.href.match(/access_token=([^&]*)/);
 			let expiresIn = window.location.href.match(/expires_in=([^&]*)/);
 
-			// determine what to do
 			if (accessToken && expiresIn) {
 				// if both of these are truthy, then ...
 				userAccessToken = accessToken[1];
