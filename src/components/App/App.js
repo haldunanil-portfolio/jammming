@@ -3,6 +3,8 @@ import './App.css';
 import SearchBar from '../SearchBar/SearchBar';
 import SearchResults from '../SearchResults/SearchResults';
 import Playlist from '../Playlist/Playlist';
+import Spotify from '../../util/Spotify';
+
 
 class App extends Component {
   constructor(props) {
@@ -84,12 +86,16 @@ class App extends Component {
 
   search(term) {
     console.log(term);
+    Spotify.getAccessToken();
+    console.log(Spotify.accessToken);
   }
 
   render() {
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
+        {console.log(Spotify.accessToken)}
+        {console.log(Spotify.accessTokenIsValid)}
         <div className="App">
           <SearchBar onSearch={this.search} />
           <div className="App-playlist">
