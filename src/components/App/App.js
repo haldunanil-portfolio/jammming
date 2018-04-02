@@ -13,13 +13,15 @@ class App extends Component {
           id: 1,
           name: 'You Are',
           artist: 'Armin van Buuren',
-          album: 'Single'
+          album: 'Single',
+          uri: 'spotify:track:6rqhFgbbKwnb9MLmUQDhG6'
         },
         {
           id: 2,
           name: 'Blah Blah',
           artist: 'Armin van Buuren',
-          album: 'ID'
+          album: 'ID',
+          uri: 'spotify:track:6rqhFgbbKwnb9MLmUQDhG3'
         }
       ],
       playlistName: 'New Playlist',
@@ -28,18 +30,22 @@ class App extends Component {
           id: 3,
           name: '22',
           artist: 'Taylor Swift',
-          album: '1989'
+          album: '1989',
+          uri: 'spotify:track:6rqhFgbbKwnb9MLmUQDhG1'
         },
         {
           id: 2,
           name: 'Blah Blah',
           artist: 'Armin van Buuren',
-          album: 'ID'
+          album: 'ID',
+          uri: 'spotify:track:6rqhFgbbKwnb9MLmUQDhG6'
         }
       ]
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
+    this.updatePlaylistName = this.updatePlaylistName.bind(this);
+    this.savePlaylist = this.savePlaylist.bind(this);
   }
 
   addTrack(track) {
@@ -64,6 +70,17 @@ class App extends Component {
     this.setState({playlistTracks: newPlaylist})
   }
 
+  updatePlaylistName(name) {
+    this.setState({playlistName: name});
+  }
+
+  savePlaylist() {
+    // generate an array of `uri` values called `trackURIs` from the `playlistTracks` property
+    let trackURIs = this.state.playlistTracks.map(track => {
+      return track.uri;
+    });
+  }
+
   render() {
     return (
       <div>
@@ -79,6 +96,8 @@ class App extends Component {
               playlistName={this.state.playlistName} 
               playlistTracks={this.state.playlistTracks} 
               onRemove={this.removeTrack}
+              onNameChange={this.updatePlaylistName}
+              onSave={this.savePlaylist}
             />
           </div>
         </div>
