@@ -35,8 +35,34 @@ let Spotify = {
 				window.location.href = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`;
 			}
 		}
-	}
+	},
 
+	search(term) {
+		return fetch(
+			// include CORS Anywhere to ensure that CORS restrictions are bypassed
+			`https://cors-anywhere.herokuapp.com/https://api.spotify.com/v1/search?type=track&q=${term.replace(' ', '+')}`,
+			// pass header for apiKey verification
+			{
+				headers: { Authorization: `Bearer ${userAccessToken}` }
+			}
+		).then(response => {
+			return response.json();	
+		}).then(jsonResponse => {
+			let tracks = jsonResponse.tracks.items;
+			return tracks.map(track => {
+				return {
+					id: track.id,
+					name: track.name,
+					artist: track.artists[0].name,
+					album: track.album.name,
+					uri: track.uri
+				}
+			});
+		});
+	}
 };
 
 export default Spotify;
+
+
+

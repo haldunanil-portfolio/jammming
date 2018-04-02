@@ -10,22 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      searchResults: [
-        {
-          id: 1,
-          name: 'You Are',
-          artist: 'Armin van Buuren',
-          album: 'Single',
-          uri: 'spotify:track:6rqhFgbbKwnb9MLmUQDhG6'
-        },
-        {
-          id: 2,
-          name: 'Blah Blah',
-          artist: 'Armin van Buuren',
-          album: 'ID',
-          uri: 'spotify:track:6rqhFgbbKwnb9MLmUQDhG3'
-        }
-      ],
+      searchResults: [],
       playlistName: 'New Playlist',
       playlistTracks: [
         {
@@ -85,9 +70,16 @@ class App extends Component {
   }
 
   search(term) {
-    console.log(term);
+    // first, get Spotify access token to make search is authenticated
     Spotify.getAccessToken();
-    console.log(Spotify.accessToken);
+
+    // next, search for the entered term
+    let searchResultsPromise = Spotify.search(term);
+    
+    // finally, wait until the promise is resolved and then update state
+    searchResultsPromise.then(searchResults => {
+      this.setState({searchResults: searchResults});
+    });
   }
 
   render() {
