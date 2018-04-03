@@ -12,22 +12,7 @@ class App extends Component {
     this.state = { 
       searchResults: [],
       playlistName: 'New Playlist',
-      playlistTracks: [
-        {
-          id: 3,
-          name: '22',
-          artist: 'Taylor Swift',
-          album: '1989',
-          uri: 'spotify:track:6rqhFgbbKwnb9MLmUQDhG1'
-        },
-        {
-          id: 2,
-          name: 'Blah Blah',
-          artist: 'Armin van Buuren',
-          album: 'ID',
-          uri: 'spotify:track:6rqhFgbbKwnb9MLmUQDhG6'
-        }
-      ]
+      playlistTracks: []
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
@@ -63,9 +48,21 @@ class App extends Component {
   }
 
   savePlaylist() {
+    // save playlist name to variable
+    const currentPlaylistName = this.state.playlistName;
+
     // generate an array of `uri` values called `trackURIs` from the `playlistTracks` property
-    let trackURIs = this.state.playlistTracks.map(track => {
+    const trackURIs = this.state.playlistTracks.map(track => {
       return track.uri;
+    });
+    
+    // save playlist
+    Spotify.savePlaylist(currentPlaylistName, trackURIs);
+
+    // reset the state of playlist name to 'New Playlist', empty search results
+    this.setState({
+      playlistName: 'New Playlist',
+      playlistTracks: [],
     });
   }
 
@@ -86,8 +83,6 @@ class App extends Component {
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
-        {console.log(Spotify.accessToken)}
-        {console.log(Spotify.accessTokenIsValid)}
         <div className="App">
           <SearchBar onSearch={this.search} />
           <div className="App-playlist">
