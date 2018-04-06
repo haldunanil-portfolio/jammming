@@ -5,7 +5,7 @@ let userAccessToken;
 let userAccessTokenExpiresIn;
 let userAccessTokenValidThrough;
 
-let Spotify = {
+let SpotifyWebAPI = {
   get accessToken() {
     return userAccessToken;
   },
@@ -37,15 +37,32 @@ let Spotify = {
         return this.accessToken;
       } else {
         // otherwise redirect to the spotify autorization page
-        window.location.href = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`;
+        const scopes = [
+          "playlist-modify-public",
+          "streaming",
+          "user-read-birthdate",
+          "user-read-email",
+          "user-read-private",
+          "user-read-playback-state",
+          "user-read-currently-playing",
+          "user-modify-playback-state"
+        ];
+        window.location.href =
+          "https://accounts.spotify.com/authorize?" +
+          "client_id=" +
+          clientId +
+          "&response_type=token" +
+          "&scope=" +
+          (scopes ? encodeURIComponent(scopes) : "") +
+          "&redirect_uri=" +
+          encodeURIComponent(redirectUri);
       }
     }
   },
 
   search(term) {
     return fetch(
-      // include CORS Anywhere to ensure that CORS restrictions are bypassed
-      `https://cors-anywhere.herokuapp.com/https://api.spotify.com/v1/search?type=track&q=${term.replace(
+      `https://api.spotify.com/v1/search?type=track&q=${term.replace(
         " ",
         "+"
       )}`,
@@ -63,7 +80,9 @@ let Spotify = {
             name: track.name,
             artist: track.artists[0].name,
             album: track.album.name,
-            uri: track.uri
+            albumArt: track.album.images[0].url,
+            uri: track.uri,
+            length: track.duration_ms
           };
         });
       });
@@ -72,8 +91,7 @@ let Spotify = {
   getUserId() {
     // get userId
     return fetch(
-      // include CORS Anywhere to ensure that CORS restrictions are bypassed
-      "https://cors-anywhere.herokuapp.com/https://api.spotify.com/v1/me",
+      "https://api.spotify.com/v1/me",
       // pass header for apiKey verification
       { headers: this.headers }
     )
@@ -88,8 +106,7 @@ let Spotify = {
   createPlaylist(userId, playlistName) {
     // now let's create a new playlist for the user
     return fetch(
-      // include CORS Anywhere to ensure that CORS restrictions are bypassed
-      `https://cors-anywhere.herokuapp.com/https://api.spotify.com/v1/users/${userId}/playlists`,
+      `https://api.spotify.com/v1/users/${userId}/playlists`,
       // pass header for apiKey verification
       {
         headers: this.headers,
@@ -108,8 +125,7 @@ let Spotify = {
   addTracksToPlaylist(userId, playlistId, trackURIs) {
     // now let's add tracks to playlist
     return fetch(
-      // include CORS Anywhere to ensure that CORS restrictions are bypassed
-      `https://cors-anywhere.herokuapp.com/https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`,
+      `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`,
       // pass header for apiKey verification
       {
         headers: this.headers,
@@ -148,7 +164,63 @@ let Spotify = {
         playlistId = pid;
         return this.addTracksToPlaylist(userId, playlistId, trackURIs);
       });
+  },
+
+  startPlayback(uris, offsetUri) {
+    return fetch(`https://api.spotify.com/v1/me/player/play?device_id=${window.deviceId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        uris: uris,
+        offset: {
+          uri: offsetUri
+        }
+      }),
+      headers: this.headers
+    });
+  },
+
+  currentPlayback() {
+    return fetch(`https://api.spotify.com/v1/me/player`, {
+      headers: this.headers
+    });
+  },
+
+  play() {
+    return fetch(`https://api.spotify.com/v1/me/player/play?device_id=${window.deviceId}`, {
+      method: "PUT",
+      headers: this.headers
+    });
+  },
+
+  pause() {
+    return fetch(`https://api.spotify.com/v1/me/player/pause`, {
+      method: "PUT",
+      headers: this.headers
+    });
+  },
+
+  previousTrack() {
+    return fetch(`https://api.spotify.com/v1/me/player/previous`, {
+      method: "POST",
+      headers: this.headers
+    });
+  },
+
+  nextTrack() {
+    return fetch(`https://api.spotify.com/v1/me/player/next`, {
+      method: "POST",
+      headers: this.headers
+    });
+  },
+
+  seek(positionMs) {
+    return fetch(`https://api.spotify.com/v1/me/player/seek?position_ms=${positionMs}`, {
+      method: "PUT",
+      headers: this.headers
+    });
   }
+
+
 };
 
-export default Spotify;
+export default SpotifyWebAPI;
