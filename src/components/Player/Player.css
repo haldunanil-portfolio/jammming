@@ -1,0 +1,66 @@
+.react-drawer-drawer {
+  background-color: #010c3f;
+}
+
+@media screen and (max-width: 991px) {
+  .react-drawer-drawer {
+    height: calc(100% - 70px);
+  }
+
+  .react-drawer-drawer p {
+    text-align: center !important;
+      margin-bottom: 0px;
+      margin-top: 0px;
+  }
+
+  .albumArtImg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 10px;
+  }
+
+  .playerButtons {
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .react-drawer-drawer {
+    -webkit-box-shadow: 0px -2px 2px #000000;
+    -moz-box-shadow: 0px -2px 2px #000000;
+    box-shadow: 0px -2px 2px #000000;
+    height: 150px;
+  }
+
+  .albumArtImg {
+    position: absolute;
+    right: 0;
+    margin: 10px;
+  }
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 1.05rem;
+  transition: color 0.25s;
+}
+
+.icon:hover {
+  color: rgba(265, 265, 265, 0.5);
+}
+
+.rangeslider-horizontal .rangeslider__fill {
+  background-color: #6c41ec;
+}
+
+.rangeslider-horizontal .rangeslider__handle:after {
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}

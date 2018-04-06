@@ -6,6 +6,7 @@ class Track extends React.Component {
     super(props);
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
+    this.openPlayer = this.openPlayer.bind(this);
   }
 
   renderAction() {
@@ -36,11 +37,30 @@ class Track extends React.Component {
     this.props.onRemove(this.props.track);
   }
 
+  openPlayer() {
+    // switch the currentTrack to be this track
+    this.props.onClick.changeCurrentTrack(
+      this.props.track.name,
+      this.props.track.artist,
+      this.props.track.album,
+      this.props.track.albumArt,
+      this.props.track.uri,
+      this.props.track.length,
+      this.props.fromPlaylist
+    );
+
+    // open the player drawer
+    this.props.onClick.onClick();
+
+    // start playback
+    this.props.onClick.startPlayback(this.props.track.uri, this.props.fromPlaylist);
+  }
+
   render() {
     return (
       <div className="Track">
         <div className="Track-information">
-          <h3>{this.props.track.name}</h3>
+          <h3 className="Track-name" onClick={this.openPlayer}>{this.props.track.name}</h3>
           <p>
             {this.props.track.artist} | {this.props.track.album}
           </p>
