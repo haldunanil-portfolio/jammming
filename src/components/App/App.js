@@ -145,10 +145,12 @@ class App extends Component {
   }
 
   closePlayer() {
+    this.handlePause();
     return this.togglePlayer(false);
   }
 
   onPlayerClose() {
+    this.handlePause();
     return this.togglePlayer(false);
   }
 
