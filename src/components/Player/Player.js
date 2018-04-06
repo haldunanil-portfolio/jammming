@@ -35,11 +35,11 @@ class Player extends React.Component {
           <Row>
             <Col lg={3}>
               <img
+                className="albumArtImg"
                 src={this.props.currentTrack.albumArt}
                 alt={this.props.currentTrack.album}
                 width={120}
                 height={120}
-                style={{ position: "absolute", right: 0, margin: 10 }}
               />
             </Col>
             <Col lg={6}>
@@ -69,7 +69,7 @@ class Player extends React.Component {
                   </p>
                 </Col>
                 <Col lg={7}>
-                  <Row style={{ textAlign: "center" }}>
+                  <Row className="playerButtons">
                     <Col>
                       <IoPlus size={30} className={"icon"} onClick={this.props.handlers.addTrack} />
                     </Col>
