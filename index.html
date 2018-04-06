@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="theme-color" content="#000000"><link rel="manifest" href="/jammming/manifest.json"><link rel="shortcut icon" href="/jammming/favicon.ico"><link rel="stylesheet" href="/jammming/reset.css"><link href="https://fonts.googleapis.com/css?family=Poppins:600" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Work+Sans:300,500" rel="stylesheet"><link rel="stylesheet" href="https://unpkg.com/react-rangeslider/umd/rangeslider.min.css"/><title>Jammming</title><link href="/jammming/static/css/main.9bdc21ee.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script src="https://sdk.scdn.co/spotify-player.js"></script><script>window.onSpotifyWebPlaybackSDKReady = () => {
+      const token = window.location.href.match(/access_token=([^&]*)/)[1];
+      const player = new Spotify.Player({
+        name: 'JammmingPlayer',
+        getOAuthToken: cb => { cb(token); }
+      });
+
+      // Error handling
+      player.addListener('initialization_error', ({ message }) => { console.error(message); });
+      player.addListener('authentication_error', ({ message }) => { console.error(message); });
+      player.addListener('account_error', ({ message }) => { console.error(message); });
+      player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+      // Playback status updates
+      player.addListener('player_state_changed', state => { console.log(state); });
+
+      // Ready
+      player.addListener('ready', ({ device_id }) => {
+        window.deviceId = device_id;
+        console.log('Ready with Device ID', device_id);
+      });
+
+      // Connect to the player!
+      player.connect();
+      window.player = player;
+    };</script><script type="text/javascript" src="/jammming/static/js/main.3aa12123.js"></script></body></html>
