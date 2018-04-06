@@ -1,5 +1,5 @@
 const clientId = "5e01d1c1bafc4e3eab9db547189f7a36";
-const redirectUri = "http://localhost:3000/";
+const redirectUri = "https://haldunanil-portfolio.github.io/jammming/";
 
 let userAccessToken;
 let userAccessTokenExpiresIn;
